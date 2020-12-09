@@ -5,12 +5,15 @@ request.open('GET','https://restcountries.eu/rest/v2/all',true);
 request.send();
 
 request.onload = function() {
+	
 	var data = JSON.parse(this.response);
+
 	//1. Get all the countries from Asia continent /region using Filter function 
 	var asiacountries = data.filter((element)=>{
 		return element.region == "Asia";
 	})
-	console.log(asiacountries);
+	//console.log(asiacountries);
+	asiacountries.forEach((item)=>console.log(item.name));
 	//2.Get all the countries with population of less than 2 lacs using Filter function
 	var population = data.filter((element)=>{
 		return element.population<200000;
@@ -27,7 +30,17 @@ request.onload = function() {
 	console.log(total);
 	//5.Print the country which use US Dollars as currency. 
 	var usdollar = data.filter((element)=>{
-		return element.currencies[0].name == "United States dollar";
+		let flag = false;
+		element.currencies.forEach((items)=>{
+			if(items.code === "USD")
+				flag = true;	
+		});
+		if(flag == true)
+			return true;
+		else
+			return false;
 	})
 	console.log(usdollar);
 }
+
+
